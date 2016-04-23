@@ -1,13 +1,14 @@
 FROM mhart/alpine-node:latest
 
+RUN apk add --update git && \
+    git clone https://github.com/etsy/statsd.git
+
 WORKDIR /statsd
 
-RUN apk add --update git && \
-    git clone https://github.com/etsy/statsd.git && \
-    npm install --production
+RUN npm install --production
 
 COPY test/config.js /statsd/config.js
-COPY lib/sink.js node_modules/statsd-influxdb-backend/index.js
+COPY lib/influxdb.js node_modules/statsd-influxdb-backend/index.js
 
 EXPOSE 8125 8126
 

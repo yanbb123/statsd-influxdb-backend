@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+
+  statsd:
+    build: .
+    ports:
+      - 8125:8125/udp
+    links:
+      - influxdb
+
+  influxdb:
+    image: tutum/influxdb:0.12
+    environment:
+      PRE_CREATE_DB: statsd
+    ports:
+      - 8086:8086
